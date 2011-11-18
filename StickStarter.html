@@ -3,9 +3,7 @@
     <head> 
     <link rel="stylesheet" href="stick.css" type="text/css">
     <script src="kinetic2d-v1.0.2.js"></script>
-    <script>
-            var armWidth = 160;
-            var armHeight = 10;
+    <script>;
             var trigA = 0;
             var trigB = 50;
             var trigC = 50;
@@ -24,24 +22,25 @@
             function polarToCartesian(length, theta) {
                 var x = Math.cos(theta) * length;
                 var y = Math.sin(theta) * length;
-                return (length, theta);
+                var cartCrds = new Array(length, theta);
+                return cartCrds;
             }
 
             function drawArm(x, y)
             {
                 this.x = x;
                 this.y = y;
-                this.width = armWidth;
-                this.height = armHeight;
-                context.fillRect(this.x, this.y, -armWidth / 2, -armHeight / 2);
+                context.lineTo(this.x, this.y);
+                context.stroke();
             }
 
             function init()
             {
                canvas = document.getElementById("stickScene");
                context = canvas.getContext("2d");
-               // More initialization stuff should go here.
-               // I could have put armWidth and armHeight in here too.
+               context.strokeStyle = "Red";
+               context.lineJoin = 'round';
+               context.lineWidth = 5;
             }
 
             function run()
@@ -72,34 +71,32 @@
                 //context.translate(-armWidth, -armHeight);
 
                 // draw arm using state 3
-                drawArm(trigA, trigB);
+                var coords = polarToCartesian(trigA, trigB);
+                drawArm(coords[0], coords[1]);
+                console.log(coords);
 
                 context.restore();
-                // rotate by 60 degress clockwise
-                context.translate(trigA, 0);
-                context.rotate(Math.PI / 3);
+                // rotate by 30 degress clockwise
+                context.rotate(Math.PI / 6);
                 // draw arm using state 2
                 var coords = cartesianToPolar(trigB, trigC);
                 drawArm(coords[0], coords[1]);
+                console.log(coords);
 
                 //context.restore();
                 // rotate by 30 degress clockwise
                 context.translate(0, 0);
                 context.rotate(Math.PI / 6);
                 // draw arm using state 2
-                // drawArm(trigC, trigA);
+                var coords = cartesianToPolar(trigC, trigA);
+                drawArm(coords[0], coords[1]);
+                console.log(coords);
+                
                 context.restore();
                 context.restore();
                 // draw without stack
                 // draw arm without the stack
                 //drawArm(5, 5);
-
-                // Advice: Organize the inline block of code from here
-                // until 'init()' just above into hierarchical routines.
-                // 
-                // Also note that I'm always calling drawArm with the place-holder
-                // argument of (0,0); that's useless.  Instead, I could
-                // have passed the final destination coordinate.
             };
         </script> 
     </head> 
