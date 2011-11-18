@@ -37,6 +37,13 @@
                 context.stroke();
             }
 
+            function drawArmPath(start, end) {
+                context.beginPath();
+                context.moveTo(start[0], start[1]);
+                context.lineTo(end[0], end[1]);
+                context.stroke();
+            }
+
             function init()
             {
                canvas = document.getElementById("stickScene");
@@ -44,18 +51,20 @@
                context.strokeStyle = "Red";
                context.lineJoin = 'round';
                context.lineWidth = 5;
+               kin = new Kinetic_2d("stickScene");
+               kin.setDrawStage(function () {
+                   var context = kin.getContext();
+                   kin.clear();
+                   run();
+               });
             }
 
-            function run()
-            {
-                // Update parameters here.
-                // Call this function at every iteration of the animation.
-                // Notice the js library that I included and didn't use - details in the reading
+            function run() {
+                //vertA[0] += 1;
+                drawTriangle();
+                console.log('run');
             }
-
-            window.onload = function () {
-                init();
-
+            function drawTriangle() {
                 // save state 1
                 context.save();
                 // translate to the center of the canvas
@@ -63,55 +72,82 @@
 
                 // save state 2
                 context.save();
-                // grow arm by 20%
-                //context.scale(1.2, 1.2);
-
-                // save state 3
-                context.save();
-                // rotate by 45 degress clockwise
-                context.translate(0, 0);
-                //context.rotate(Math.PI / 4);
-
-                // draw arm using state 3
-                var coords = polarToCartesian(trigA, degToRad(0));
-                var pCoordsStart = cartesianToPolar(vertA[0], vertA[1]);
-                var pCoordsEnd = cartesianToPolar(vertB[0], vertB[1]);
-                drawArm(pCoordsStart[0], pCoordsEnd[0]);
-                // drawArm(coords[0], coords[1]);
-                console.log(coords);
+                // draw sides using state 2
+                drawArmPath(vertA, vertB);
+                drawArmPath(vertB, vertC);
+                drawArmPath(vertC, vertA);
 
                 context.restore();
-                // rotate by 60 degrees clockwise
-                //context.rotate(Math.PI / 3);
-                // draw arm using state 2
-                var coords = polarToCartesian(trigB, degToRad(60));
-                var pCoordsStart = cartesianToPolar(vertB[0], vertB[1]);
-                var pCoordsEnd = cartesianToPolar(vertC[0], vertC[1]);
-                drawArm(pCoordsStart[0], pCoordsEnd[0]);
-                // drawArm(coords[0], coords[1]);
-                console.log(coords);
+            }
 
-                context.restore();
-                // rotate back the 30 degrees anti-clockwise
-                // and another 30 degrees anti-clockwise
-                //context.translate(0, 0);
-                //context.rotate(-Math.PI / 6);
+            window.onload = function () {
+                init();
 
-                // draw arm using state 1
-                var coords = polarToCartesian(trigC, degToRad(60));
-                var pCoordsStart = cartesianToPolar(vertC[0], vertC[1]);
-                var pCoordsEnd = cartesianToPolar(vertA[0], vertA[1]);
-                drawArm(pCoordsStart[0], pCoordsEnd[0]);
-                //drawArm(coords[0], coords[1]);
+                if (false) {
+                    // save state 1
+                    context.save();
+                    // translate to the center of the canvas
+                    context.translate(canvas.width / 2, canvas.height / 2);
 
-                console.log(coords);
+                    // save state 2
+                    context.save();
+                    // grow arm by 20%
+                    //context.scale(1.2, 1.2);
 
-                context.restore();
+                    // save state 3
+                    context.save();
+                    // rotate by 45 degress clockwise
+                    context.translate(0, 0);
+                    //context.rotate(Math.PI / 4);
 
-                context.restore();
+                    // draw arm using state 3
+                    var coords = polarToCartesian(trigA, degToRad(0));
+                    var pCoordsStart = cartesianToPolar(vertA[0], vertA[1]);
+                    var pCoordsEnd = cartesianToPolar(vertB[0], vertB[1]);
+                    //drawArm(pCoordsStart[0], pCoordsEnd[0]);
+                    //drawArmPath(pCoordsStart, pCoordsEnd);
+                    drawArmPath(vertA, vertB);
+                    // drawArm(coords[0], coords[1]);
+                    console.log(pCoordsStart);
 
-                // draw arm without the stack
-                //drawArm(5, 5);
+                    context.restore();
+                    // rotate by 60 degrees clockwise
+                    context.translate(0, 0);
+                    //context.rotate(Math.PI / 3);
+                    // draw arm using state 2
+                    var coords = polarToCartesian(trigB, degToRad(60));
+                    var pCoordsStart = cartesianToPolar(vertB[0], vertB[1]);
+                    var pCoordsEnd = cartesianToPolar(vertC[0], vertC[1]);
+                    //drawArm(pCoordsStart[0], pCoordsEnd[0]);
+                    //drawArmPath(pCoordsStart, pCoordsEnd);
+                    drawArmPath(vertB, vertC);
+                    // drawArm(coords[0], coords[1]);
+                    console.log(pCoordsStart);
+
+                    context.restore();
+                    // rotate back the 30 degrees anti-clockwise
+                    // and another 30 degrees anti-clockwise
+                    context.translate(0, 0);
+                    //context.rotate(Math.PI / 6);
+
+                    // draw arm using state 1
+                    var coords = polarToCartesian(trigC, degToRad(60));
+                    var pCoordsStart = cartesianToPolar(vertC[0], vertC[1]);
+                    var pCoordsEnd = cartesianToPolar(vertA[0], vertA[1]);
+                    //drawArm(pCoordsStart[0], pCoordsEnd[0]);
+                    //drawArmPath(pCoordsStart, pCoordsEnd);
+                    drawArmPath(vertC, vertA);
+                    //drawArm(coords[0], coords[1]);
+
+                    console.log(pCoordsStart);
+
+                    context.restore();
+
+                    context.restore();
+
+                    // draw arm without the stack
+                    //drawArm(5, 5);
+                }
             };
         </script> 
     </head> 
