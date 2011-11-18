@@ -10,6 +10,23 @@
             var trigB = 50;
             var trigC = 50;
 
+            function degToRad(degrees) {
+                return degrees * Math.PI / 180;
+            }
+
+            function cartesianToPolar(x, y) {
+                var length = Math.sqrt((x * x) + (y * y));
+                var angle = Math.atan(y / x);
+                var polarCrds = new Array(length, angle);
+                return polarCrds;
+            }
+
+            function polarToCartesian(length, theta) {
+                var x = Math.cos(theta) * length;
+                var y = Math.sin(theta) * length;
+                return (length, theta);
+            }
+
             function drawArm(x, y)
             {
                 this.x = x;
@@ -51,25 +68,26 @@
                 context.save();
                 // rotate by 45 degress clockwise
                 context.translate(0, 0);
-                context.rotate(Math.PI / 4);
+                //      context.rotate(Math.PI / 4);
                 //context.translate(-armWidth, -armHeight);
 
                 // draw arm using state 3
                 drawArm(trigA, trigB);
 
                 context.restore();
-                // rotate by 45 degress clockwise
-                context.translate(0, 0);
-                context.rotate(Math.PI / 2);
+                // rotate by 60 degress clockwise
+                context.translate(trigA, 0);
+                context.rotate(Math.PI / 3);
                 // draw arm using state 2
-                drawArm(trigB, trigC);
+                var coords = cartesianToPolar(trigB, trigC);
+                drawArm(coords[0], coords[1]);
 
                 //context.restore();
-                // rotate by 45 degress clockwise
+                // rotate by 30 degress clockwise
                 context.translate(0, 0);
-                context.rotate(Math.PI);
+                context.rotate(Math.PI / 6);
                 // draw arm using state 2
-                drawArm(trigC, trigA);
+                // drawArm(trigC, trigA);
                 context.restore();
                 context.restore();
                 // draw without stack
