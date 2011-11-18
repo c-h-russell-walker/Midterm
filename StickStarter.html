@@ -7,21 +7,27 @@
     <script>
         var kin;
 
-        var vertA = new Array(120, 70);
+        /*var vertA = new Array(120, 70);
         var vertB = new Array(70, 170);
-        var vertC = new Array(170, 170);
-        var vertX = new Array(70, 20);
+        var vertC = new Array(170, 170);*/
+        var vertA = new Array(0, 100);
+        var vertB = new Array(-100 * Math.cos(45), -100 * Math.cos(45));
+        var vertC = new Array(100 * Math.cos(45), 100 * Math.cos(45));
+        /*var vertX = new Array(70, 20);
         var vertY = new Array(20, 120);
-        var vertZ = new Array(120, 120);
+        var vertZ = new Array(120, 120);*/
+        var vertX = new Array(0, 50);
+        var vertY = new Array(-50, -50);
+        var vertZ = new Array(50, -50);
         var rect = new Array([-200, -200], [-200, 200], [200, 200], [200, -200]);
 
         var innerTrigSpin = false;
         var outerTrigSpin = false;
         var squareSpin = false;
 
-        var innerTrigAngle = 0;
-        var outerTrigAngle = 0;
-        var squareAngle = 0;
+        var innerTrigAngle;
+        var outerTrigAngle;
+        var squareAngle;
 
             function degToRad(degrees) {
                 return degrees * Math.PI / 180;
@@ -56,21 +62,24 @@
                 context.stroke();
             }
 
-            function init()
-            {
-               // Set up mouse/keyboard events
-               $(window).keydown(keyHandler);
-               canvas = document.getElementById("stickScene");
-               context = canvas.getContext("2d");
-               context.strokeStyle = "Red";
-               context.lineJoin = 'round';
-               context.lineWidth = 5;
-               kin = new Kinetic_2d("stickScene");
-               kin.setDrawStage(function () {
+            function init() {
+                innerTrigAngle = 0;
+                outerTrigAngle = 0;
+                squareAngle = 0;
+
+                // Set up mouse/keyboard events
+                $(window).keydown(keyHandler);
+                canvas = document.getElementById("stickScene");
+                context = canvas.getContext("2d");
+                context.strokeStyle = "Red";
+                context.lineJoin = 'round';
+                context.lineWidth = 5;
+                kin = new Kinetic_2d("stickScene");
+                kin.setDrawStage(function () {
                    var context = kin.getContext();
                    kin.clear();
                    run();
-               });
+                });
            }
 
            // Key Handlers
@@ -93,15 +102,27 @@
 
                 // save state 2
                 context.save();
-                context.translate(140, 160);
+                context.translate(200, 150);
                 context.scale(0.5, 0.5);
+
+                if (innerTrigSpin) {
+                    innerTrigAngle += 1;
+                    context.rotate(degToRad(innerTrigAngle));
+                }
+
                 drawTriangle(vertA, vertB, vertC);
                 context.restore();
 
                 // save state 3
                 context.save();
-                context.scale(2, 2);
-                context.translate(30, 30);
+                context.scale(2.5, 2.5);
+                context.translate(80, 80);
+
+                if (outerTrigSpin) {
+                    outerTrigAngle -= 1.5;
+                    context.rotate(degToRad(outerTrigAngle));
+                }
+                
                 drawTriangle(vertX, vertY, vertZ);
                 context.restore();
 
@@ -116,7 +137,7 @@
                 context.save();
 
                 if (squareSpin) {
-                    squareAngle += 1;
+                    squareAngle += 0.5;
                     context.rotate(degToRad(squareAngle));
                 }
 
