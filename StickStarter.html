@@ -7,19 +7,17 @@
     <script>
         var kin;
 
-        /*var vertA = new Array(120, 70);
-        var vertB = new Array(70, 170);
-        var vertC = new Array(170, 170);*/
-        var vertA = new Array(0, 100);
-        var vertB = new Array(-100 * Math.cos(45), -100 * Math.cos(45));
-        var vertC = new Array(100 * Math.cos(45), 100 * Math.cos(45));
-        /*var vertX = new Array(70, 20);
-        var vertY = new Array(20, 120);
-        var vertZ = new Array(120, 120);*/
-        var vertX = new Array(0, 50);
-        var vertY = new Array(-50, -50);
-        var vertZ = new Array(50, -50);
-        var rect = new Array([-200, -200], [-200, 200], [200, 200], [200, -200]);
+        var vertA = new Array(0, 82.5);
+        var vertB = new Array(-60, -37.5);
+        var vertC = new Array(60, -37.5);
+        var vertX = new Array(0, 110);
+        var vertY = new Array(-80, -50);
+        var vertZ = new Array(80, -50);
+        var squareSize = 250;
+        var rect = new Array([-squareSize, -squareSize],
+                             [-squareSize, squareSize],
+                             [squareSize, squareSize],
+                             [squareSize, -squareSize]);
 
         var innerTrigSpin = false;
         var outerTrigSpin = false;
@@ -45,21 +43,6 @@
                 var y = Math.sin(theta) * length;
                 var cartCrds = new Array(length, theta);
                 return cartCrds;
-            }
-
-            function drawArm(x, y)
-            {
-                this.x = x;
-                this.y = y;
-                context.lineTo(this.x, this.y);
-                context.stroke();
-            }
-
-            function drawSide(start, end) {
-                context.beginPath();
-                context.moveTo(start[0], start[1]);
-                context.lineTo(end[0], end[1]);
-                context.stroke();
             }
 
             function init() {
@@ -102,8 +85,9 @@
 
                 // save state 2
                 context.save();
-                context.translate(200, 150);
+                context.translate(150, 150);
                 context.scale(0.5, 0.5);
+                context.translate((canvas.width / 8) - 20, (canvas.height / 8) + 20);
 
                 if (innerTrigSpin) {
                     innerTrigAngle += 1;
@@ -115,8 +99,8 @@
 
                 // save state 3
                 context.save();
-                context.scale(2.5, 2.5);
-                context.translate(80, 80);
+                context.scale(2, 2);
+                context.translate((canvas.width / 8) - 20, (canvas.height / 8) + 20);
 
                 if (outerTrigSpin) {
                     outerTrigAngle -= 1.5;
@@ -153,12 +137,20 @@
             function drawTriangle(coordA, coordB, coordC) {
                 // save state 
                 context.save();
+
                 // draw sides using state
                 drawSide(coordA, coordB);
                 drawSide(coordB, coordC);
                 drawSide(coordC, coordA);
 
                 context.restore();
+            }
+
+            function drawSide(start, end) {
+                context.beginPath();
+                context.moveTo(start[0], start[1]);
+                context.lineTo(end[0], end[1]);
+                context.stroke();
             }
 
             window.onload = function () {
