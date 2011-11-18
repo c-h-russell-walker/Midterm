@@ -6,6 +6,9 @@
     <script>
             var armWidth = 160;
             var armHeight = 10;
+            var trigA = 0;
+            var trigB = 50;
+            var trigC = 50;
 
             function drawArm(x, y)
             {
@@ -13,7 +16,7 @@
                 this.y = y;
                 this.width = armWidth;
                 this.height = armHeight;
-                context.fillRect(-armWidth / 2, -armHeight / 2, armWidth, armHeight);
+                context.fillRect(this.x, this.y, -armWidth / 2, -armHeight / 2);
             }
 
             function init()
@@ -31,42 +34,54 @@
                 // Notice the js library that I included and didn't use - details in the reading
             }
 
-            window.onload = function() {
-               init();
+            window.onload = function () {
+                init();
 
-               // save state 1
-               context.save();
-               // translate to the center of the canvas
-               context.translate( canvas.width/2, canvas.height/2 );
+                // save state 1
+                context.save();
+                // translate to the center of the canvas
+                context.translate(canvas.width / 2, canvas.height / 2);
 
-               // save state 2
-               context.save();
-               // grow arm by 20%
-               context.scale( 1.2, 1.2 );
+                // save state 2
+                context.save();
+                // grow arm by 20%
+                //context.scale(1.2, 1.2);
 
-               // save state 3
-               context.save(); 
-               // rotate by 30 degress clockwise
-               context.rotate( Math.PI / 6 );
+                // save state 3
+                context.save();
+                // rotate by 45 degress clockwise
+                context.translate(0, 0);
+                context.rotate(Math.PI / 4);
+                //context.translate(-armWidth, -armHeight);
 
-               // draw arm using state 3
-               drawArm( 0,0 );
+                // draw arm using state 3
+                drawArm(trigA, trigB);
 
-               context.restore();
-               context.restore();
-               // draw arm using state 1
-               drawArm( 0,0 );
+                context.restore();
+                // rotate by 45 degress clockwise
+                context.translate(0, 0);
+                context.rotate(Math.PI / 2);
+                // draw arm using state 2
+                drawArm(trigB, trigC);
 
-               context.restore();
-               // draw arm without the stack
-               drawArm( 0,0 );
+                //context.restore();
+                // rotate by 45 degress clockwise
+                context.translate(0, 0);
+                context.rotate(Math.PI);
+                // draw arm using state 2
+                drawArm(trigC, trigA);
+                context.restore();
+                context.restore();
+                // draw without stack
+                // draw arm without the stack
+                //drawArm(5, 5);
 
-               // Advice: Organize the inline block of code from here
-               // until 'init()' just above into hierarchical routines.
-               // 
-               // Also note that I'm always calling drawArm with the place-holder
-               // argument of (0,0); that's useless.  Instead, I could
-               // have passed the final destination coordinate.
+                // Advice: Organize the inline block of code from here
+                // until 'init()' just above into hierarchical routines.
+                // 
+                // Also note that I'm always calling drawArm with the place-holder
+                // argument of (0,0); that's useless.  Instead, I could
+                // have passed the final destination coordinate.
             };
         </script> 
     </head> 
