@@ -74,32 +74,42 @@
 
                 // draw arm using state 3
                 var coords = polarToCartesian(trigA, degToRad(0));
-                drawArm(coords[0], coords[1]);
+                var pCoordsStart = cartesianToPolar(vertA[0], vertA[1]);
+                var pCoordsEnd = cartesianToPolar(vertB[0], vertB[1]);
+                drawArm(pCoordsStart[0], pCoordsEnd[0]);
+                // drawArm(coords[0], coords[1]);
                 console.log(coords);
 
                 context.restore();
                 // rotate by 60 degrees clockwise
-                context.rotate(Math.PI / 3);
+                //context.rotate(Math.PI / 3);
                 // draw arm using state 2
                 var coords = polarToCartesian(trigB, degToRad(60));
-                drawArm(coords[0], coords[1]);
+                var pCoordsStart = cartesianToPolar(vertB[0], vertB[1]);
+                var pCoordsEnd = cartesianToPolar(vertC[0], vertC[1]);
+                drawArm(pCoordsStart[0], pCoordsEnd[0]);
+                // drawArm(coords[0], coords[1]);
                 console.log(coords);
 
                 context.restore();
                 // rotate back the 30 degrees anti-clockwise
                 // and another 30 degrees anti-clockwise
                 //context.translate(0, 0);
-                context.rotate(-Math.PI / 6);
+                //context.rotate(-Math.PI / 6);
 
                 // draw arm using state 1
                 var coords = polarToCartesian(trigC, degToRad(60));
-                drawArm(coords[0], coords[1]);
+                var pCoordsStart = cartesianToPolar(vertC[0], vertC[1]);
+                var pCoordsEnd = cartesianToPolar(vertA[0], vertA[1]);
+                drawArm(pCoordsStart[0], pCoordsEnd[0]);
+                //drawArm(coords[0], coords[1]);
+
                 console.log(coords);
-                
+
                 context.restore();
-                
+
                 context.restore();
-                
+
                 // draw arm without the stack
                 //drawArm(5, 5);
             };
