@@ -4,12 +4,14 @@
     <link rel="stylesheet" href="stick.css" type="text/css">
     <script src="kinetic2d-v1.0.2.js"></script>
     <script>
-        var vertA = new Array(70, 20);
-        var vertB = new Array(20, 120);
-        var vertC = new Array(120, 120);
-            var trigA = 30;
-            var trigB = 30;
-            var trigC = 30;
+        var vertA = new Array(120, 70);
+        var vertB = new Array(70, 170);
+        var vertC = new Array(170, 170);
+        var vertX = new Array(70, 20);
+        var vertY = new Array(20, 120);
+        var vertZ = new Array(120, 120);
+
+        var lgTrigScale = 3;
 
             function degToRad(degrees) {
                 return degrees * Math.PI / 180;
@@ -60,94 +62,42 @@
             }
 
             function run() {
-                //vertA[0] += 1;
-                drawTriangle();
-                console.log('run');
-            }
-            function drawTriangle() {
+                vertA[0] += 1;
                 // save state 1
                 context.save();
-                // translate to the center of the canvas
-                context.translate(canvas.width / 2, canvas.height / 2);
+                context.translate(canvas.width / 4, canvas.height / 4);
 
                 // save state 2
                 context.save();
-                // draw sides using state 2
-                drawArmPath(vertA, vertB);
-                drawArmPath(vertB, vertC);
-                drawArmPath(vertC, vertA);
+                context.translate(lgTrigScale * 50, lgTrigScale * 50);
+                context.scale(0.5, 0.5);
+                drawTriangle(vertA, vertB, vertC);
+                context.restore();
+
+                // save state 3
+                context.save();
+                // translate to the center of the canvas
+
+                context.scale(lgTrigScale, lgTrigScale);
+                drawTriangle(vertX, vertY, vertZ);
+                context.restore();
+
+                context.restore();
+            }
+
+            function drawTriangle(coordA, coordB, coordC) {
+                // save state 
+                context.save();
+                // draw sides using state
+                drawArmPath(coordA, coordB);
+                drawArmPath(coordB, coordC);
+                drawArmPath(coordC, coordA);
 
                 context.restore();
             }
 
             window.onload = function () {
                 init();
-
-                if (false) {
-                    // save state 1
-                    context.save();
-                    // translate to the center of the canvas
-                    context.translate(canvas.width / 2, canvas.height / 2);
-
-                    // save state 2
-                    context.save();
-                    // grow arm by 20%
-                    //context.scale(1.2, 1.2);
-
-                    // save state 3
-                    context.save();
-                    // rotate by 45 degress clockwise
-                    context.translate(0, 0);
-                    //context.rotate(Math.PI / 4);
-
-                    // draw arm using state 3
-                    var coords = polarToCartesian(trigA, degToRad(0));
-                    var pCoordsStart = cartesianToPolar(vertA[0], vertA[1]);
-                    var pCoordsEnd = cartesianToPolar(vertB[0], vertB[1]);
-                    //drawArm(pCoordsStart[0], pCoordsEnd[0]);
-                    //drawArmPath(pCoordsStart, pCoordsEnd);
-                    drawArmPath(vertA, vertB);
-                    // drawArm(coords[0], coords[1]);
-                    console.log(pCoordsStart);
-
-                    context.restore();
-                    // rotate by 60 degrees clockwise
-                    context.translate(0, 0);
-                    //context.rotate(Math.PI / 3);
-                    // draw arm using state 2
-                    var coords = polarToCartesian(trigB, degToRad(60));
-                    var pCoordsStart = cartesianToPolar(vertB[0], vertB[1]);
-                    var pCoordsEnd = cartesianToPolar(vertC[0], vertC[1]);
-                    //drawArm(pCoordsStart[0], pCoordsEnd[0]);
-                    //drawArmPath(pCoordsStart, pCoordsEnd);
-                    drawArmPath(vertB, vertC);
-                    // drawArm(coords[0], coords[1]);
-                    console.log(pCoordsStart);
-
-                    context.restore();
-                    // rotate back the 30 degrees anti-clockwise
-                    // and another 30 degrees anti-clockwise
-                    context.translate(0, 0);
-                    //context.rotate(Math.PI / 6);
-
-                    // draw arm using state 1
-                    var coords = polarToCartesian(trigC, degToRad(60));
-                    var pCoordsStart = cartesianToPolar(vertC[0], vertC[1]);
-                    var pCoordsEnd = cartesianToPolar(vertA[0], vertA[1]);
-                    //drawArm(pCoordsStart[0], pCoordsEnd[0]);
-                    //drawArmPath(pCoordsStart, pCoordsEnd);
-                    drawArmPath(vertC, vertA);
-                    //drawArm(coords[0], coords[1]);
-
-                    console.log(pCoordsStart);
-
-                    context.restore();
-
-                    context.restore();
-
-                    // draw arm without the stack
-                    //drawArm(5, 5);
-                }
             };
         </script> 
     </head> 
