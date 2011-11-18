@@ -3,10 +3,13 @@
     <head> 
     <link rel="stylesheet" href="stick.css" type="text/css">
     <script src="kinetic2d-v1.0.2.js"></script>
-    <script>;
-            var trigA = 0;
-            var trigB = 50;
-            var trigC = 50;
+    <script>
+        var vertA = new Array(70, 20);
+        var vertB = new Array(20, 120);
+        var vertC = new Array(120, 120);
+            var trigA = 30;
+            var trigB = 30;
+            var trigC = 30;
 
             function degToRad(degrees) {
                 return degrees * Math.PI / 180;
@@ -67,34 +70,36 @@
                 context.save();
                 // rotate by 45 degress clockwise
                 context.translate(0, 0);
-                //      context.rotate(Math.PI / 4);
-                //context.translate(-armWidth, -armHeight);
+                //context.rotate(Math.PI / 4);
 
                 // draw arm using state 3
-                var coords = polarToCartesian(trigA, trigB);
+                var coords = polarToCartesian(trigA, degToRad(0));
                 drawArm(coords[0], coords[1]);
                 console.log(coords);
 
                 context.restore();
-                // rotate by 30 degress clockwise
-                context.rotate(Math.PI / 6);
+                // rotate by 60 degrees clockwise
+                context.rotate(Math.PI / 3);
                 // draw arm using state 2
-                var coords = cartesianToPolar(trigB, trigC);
+                var coords = polarToCartesian(trigB, degToRad(60));
                 drawArm(coords[0], coords[1]);
                 console.log(coords);
 
-                //context.restore();
-                // rotate by 30 degress clockwise
-                context.translate(0, 0);
-                context.rotate(Math.PI / 6);
-                // draw arm using state 2
-                var coords = cartesianToPolar(trigC, trigA);
+                context.restore();
+                // rotate back the 30 degrees anti-clockwise
+                // and another 30 degrees anti-clockwise
+                //context.translate(0, 0);
+                context.rotate(-Math.PI / 6);
+
+                // draw arm using state 1
+                var coords = polarToCartesian(trigC, degToRad(60));
                 drawArm(coords[0], coords[1]);
                 console.log(coords);
                 
                 context.restore();
+                
                 context.restore();
-                // draw without stack
+                
                 // draw arm without the stack
                 //drawArm(5, 5);
             };
